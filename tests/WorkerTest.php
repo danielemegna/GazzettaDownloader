@@ -14,13 +14,23 @@ class WorkerTest extends PHPUnit_Framework_TestCase
 
   function testWorkerCanGetTodayTopicLink()
   {
+    $d = new DateTime();
+    $expected = sprintf(
+      'http://vstau.info/%1$s/%2$s/%3$s/la-gazzetta-dello-sport-%3$s-%2$s-%1$s/',
+      $d->format("Y"), $d->format("m"), $d->format("d")
+    );
+
     $w = new Worker();
     $todayTopic = $w->getTodayTopicLink();
     $this->assertEquals(
-      "http://vstau.info/2014/12/03/la-gazzetta-dello-sport-03-12-2014/",
+      $expected,
       $todayTopic
     );
   }
 
+  function testWorkerCanGetDownloadLink()
+  {
+    $w = new Worker();
+  }
   
 }
