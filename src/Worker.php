@@ -21,7 +21,7 @@ class Worker
       $this->getTodayTopicLink()
     );
 
-    $pattern = '$"(https?://'.$provider.'/[\S\s]+)["]+?$';
+    $pattern = '$"(https?://'.$provider.'/[\S\s]+?)"$';
     preg_match($pattern, $source, $matches); 
     if(sizeof($matches) < 2)
       throw new Exception("Cannot find today download link!");
