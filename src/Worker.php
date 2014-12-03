@@ -5,8 +5,14 @@ class Worker
   function getTodayTopicLink()
   {
     $source = $this->getSourceWithCurl("http://vstau.info/category/giornali/");
+    $pattern = '$Download La Gazzetta dello Sport[\S\s]+'
+      .'(http://vstau.info/[\S\s]+la-gazzetta-dello-sport-[0-9]{2}-[0-9]{2}-[0-9]{4}/)$';
 
-    return "http://vstau.info/2014/12/03/la-gazzetta-dello-sport-03-12-2014/";
+    preg_match($pattern, $source, $matches); 
+    if(sizeof($matches) < 2)
+      throw new Exception("Cannot find today topic link!");
+   
+    return $matches[1];
   }
 
   private function getSourceWithCurl($url)

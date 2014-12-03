@@ -21,4 +21,6 @@ class WorkerTest extends PHPUnit_Framework_TestCase
       $todayTopic
     );
   }
+
+  
 }
