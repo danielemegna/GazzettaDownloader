@@ -1,0 +1,19 @@
+{
+  "name": "daniele/gazzetta-downloader",
+  "description": "A Gazzetta downloader script",
+  "require": {
+    "lib-curl": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.3"
+  },
+  "authors": [
+    {
+      "name": "Daniele Megna",
+      "email": "megna.dany@libero.it"
+    }
+  ],
+  "autoload": {
+    "classmap": ["src"]
+  }
+}
