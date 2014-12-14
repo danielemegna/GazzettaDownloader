@@ -18,12 +18,9 @@ class WorkerTest extends PHPUnit_Framework_TestCase
     $todayTopic = $w->getTodayTopicLink();
 
     $d = new DateTime();
-    $expected = sprintf(
-      'http://vstau.info/%1$s/%2$s/%3$s/la-gazzetta-dello-sport-%3$s-%2$s-%1$s/',
-      $d->format("Y"), $d->format("m"), $d->format("d")
-    );
+    $pattern = '$http://vstau.info/[0-9]{2,4}/[0-9]{2}/[0-9]{2}/la-gazzetta-dello-sport-[0-9]{2}-[0-9]{2}-[0-9]{2}/$';
 
-    $this->assertEquals($expected, $todayTopic);
+    $this->assertRegExp($pattern, $todayTopic);
   }
 
   function testWorkerCanGetDownloadLink()
@@ -32,8 +29,8 @@ class WorkerTest extends PHPUnit_Framework_TestCase
     $provider = "www.tusfiles.net";
     $downloadLink = $w->getDownloadLink($provider);
 
-    $expected = "https://www.tusfiles.net/jw1zzzh3eu34";
-    $this->assertEquals($expected, $downloadLink);
+    $pattern = '$https?://www.tusfiles.net/[a-z0-9]{12}$';
+    $this->assertRegExp($pattern, $downloadLink);
   }
 
 }
