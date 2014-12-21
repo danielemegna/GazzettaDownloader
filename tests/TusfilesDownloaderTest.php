@@ -13,15 +13,10 @@ class TusfilesDownloaderTest extends PHPUnit_Framework_TestCase
 
   function testTDCanDownloadFromLink()
   {
-    $downloadLink = "https://www.tusfiles.net/jw1zzzh3eu34";
-
-    $filepath = "/home/daniele/Dropbox/homeip/GazzettaTest.pdf";
-    $this->td->download($downloadLink, $filepath);
-
-    $this->assertFileExists($filepath);
-    exec("rm $filepath");
-
-    // http://p.tusfiles.net/d/a4k3rch5tz2fvxijr7zzjfqgcb3zsdsih6dataipb62qpuumpmp7kgjd/GDS(2014_12_03).pdf
+    $pageLink = "https://www.tusfiles.net/jw1zzzh3eu34";
+    $directLink = $this->td->getFileDirectLink($pageLink);
+    
+    $pattern = "!http://p\.tusfiles\.net/d/[a-z0-9]{56}/GDS\([0-9]{4}_[0-9]{2}_[0-9]{2}\)\.pdf!";
+    $this->assertRegExp($pattern, $directLink);
   }
-
 }
