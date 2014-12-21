@@ -2,6 +2,13 @@
 
 class Worker
 {
+  private $curlHelper;
+
+  function __construct($curlHelper)
+  {
+    $this->curlHelper = $curlHelper;
+  }
+
   function getTodayTopicLink()
   {
     $source = $this->getSourceWithCurl("http://vstau.info/category/giornali/");
@@ -13,7 +20,7 @@ class Worker
       $source = $this->getSourceWithCurl("http://vstau.info/category/giornali/page/2");
       preg_match($pattern, $source, $matches); 
 
-      if(sizeof($matches) < 2)
+      if(sizeof($matches) < 3)
         throw new Exception("Cannot find today topic link!");
    }
    
@@ -36,14 +43,6 @@ class Worker
 
   private function getSourceWithCurl($url)
   {
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    $data = curl_exec($ch);
-    curl_close($ch);
-    return $data;
+    return $this->curlHelper->getSource($url);
   }
 }

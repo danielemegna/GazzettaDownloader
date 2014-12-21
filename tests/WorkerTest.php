@@ -2,6 +2,15 @@
 
 class WorkerTest extends PHPUnit_Framework_TestCase
 {
+  private $w;
+
+  function setUp()
+  {
+    $this->w = new Worker(
+      new CurlHelper()
+    );
+  }
+  
   function testIsWorking()
   {
     $this->assertTrue(true);
@@ -9,13 +18,12 @@ class WorkerTest extends PHPUnit_Framework_TestCase
 
   function testWorkerExists()
   {
-    $w = new Worker();
+    $this->assertNotNull($this->w);
   }
 
   function testWorkerCanGetTodayTopicLink()
   {
-    $w = new Worker();
-    $todayTopic = $w->getTodayTopicLink();
+    $todayTopic = $this->w->getTodayTopicLink();
 
     $d = new DateTime();
     $pattern = '$http://vstau.info/[0-9]{2,4}/[0-9]{2}/[0-9]{2}/la-gazzetta-dello-sport-[0-9]{2}-[0-9]{2}-[0-9]{2}/$';
@@ -25,9 +33,8 @@ class WorkerTest extends PHPUnit_Framework_TestCase
 
   function testWorkerCanGetDownloadLink()
   {
-    $w = new Worker();
     $provider = "www.tusfiles.net";
-    $downloadLink = $w->getDownloadLink($provider);
+    $downloadLink = $this->w->getDownloadLink($provider);
 
     $pattern = '$https?://www.tusfiles.net/[a-z0-9]{12}$';
     $this->assertRegExp($pattern, $downloadLink);
