@@ -12,11 +12,12 @@ class TusfilesDownloader
   function getFileDirectLink($link)
   {
     $rand = $this->getRandValueFromTusfilePageLink($link);
+    $id = $this->getIdValueFromTusfilePageLink($link);
 
     $ch = curl_init($link);
     $params = array(
       'op' => 'download2',
-      'id' => 'jw1zzzh3eu34',
+      'id' => $id,
       'rand' => $rand,
       'referer' => '',
       'method_free' => '',
@@ -33,6 +34,13 @@ class TusfilesDownloader
     curl_close($ch);
 
     return $header['redirect_url'];
+  }
+
+  private function getIdValueFromTusfilePageLink($link)
+  {
+    $pattern = '!www.tusfiles.net/([a-z0-9]{12})!';
+    preg_match($pattern, $link, $matches);
+    return $matches[1];
   }
 
   private function getRandValueFromTusfilePageLink($link)
