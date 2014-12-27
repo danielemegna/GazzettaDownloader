@@ -38,4 +38,14 @@ class WorkerTest extends PHPUnit_Framework_TestCase
     $this->assertRegExp($pattern, $downloadLink);
   }
 
+  function testWorkerCanGetTodayTopicWithTusfilesLink()
+  {
+    $todayTopic = $this->w->getTodayTopic([
+      "www.tusfiles.net"
+    ]);
+
+    $this->assertNotNull($todayTopic);
+    $this->assertRegExp("!La Gazzetta dello Sport \(27-12-14\)!", $todayTopic->title);
+    $this->assertRegExp('$https?://www.tusfiles.net/[a-z0-9]{12}$', $todayTopic->links["www.tusfiles.net"]);
+  }
 }
