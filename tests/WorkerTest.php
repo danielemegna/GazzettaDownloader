@@ -45,7 +45,7 @@ class WorkerTest extends PHPUnit_Framework_TestCase
     ]);
 
     $this->assertNotNull($todayTopic);
-    $this->assertRegExp("!La Gazzetta dello Sport \(27-12-14\)!", $todayTopic->title);
+    $this->assertRegExp("!La Gazzetta dello Sport \([0-9]{2}-[0-9]{2}-[0-9]{2}\)!", $todayTopic->title);
     $this->assertRegExp('$https?://www.tusfiles.net/[a-z0-9]{12}$', $todayTopic->links["www.tusfiles.net"]);
   }
 }
