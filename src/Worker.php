@@ -2,8 +2,11 @@
 
 class Topic
 {
+  public $url;
+  public $htmlSource;
   public $title;
-  public $links;
+  public $downloadLinks;
+  public $imageurl;
 }
 
 class Worker
@@ -19,18 +22,18 @@ class Worker
   {
     $topic = new Topic();
     
-    $todayTopicLink = $this->getTodayTopicLink();
-    $todayTopicSource = $this->curlHelper->getSource($todayTopicLink);
-
-    $topic->title = $this->getTitleFromTopicSource($todayTopicSource);
+    $topic->url = $this->getTodayTopicLink();
+    $topic->htmlSource = $this->curlHelper->getSource($topic->url);
+    $topic->title = $this->getTitleFromTopicSource($topic->htmlSource);
+    $topic->imageurl = $this->getImageurlFromTopicSource($topic->htmlSource);
 
     foreach($providers as $provider)
-      $topic->links[$provider] = $this->getDownloadLinkFromTopicSource($todayTopicSource, $provider);
+      $topic->downloadLinks[$provider] = $this->getDownloadLinkFromTopicSource($topic->htmlSource, $provider);
 
     return $topic;
   }
 
-  function getTodayTopicLink()
+  private function getTodayTopicLink()
   {
     $source = $this->curlHelper->getSource("http://vstau.info/category/giornali/");
     $pattern = '$(http://vstau.info/[\S\s]{10}/la-gazzetta-dello-sport-[0-9]{2}-[0-9]{2}-[0-9]{2,4}/)$';
@@ -48,24 +51,7 @@ class Worker
     return $matches[1];
   }
 
-  function getDownloadLink($provider)
-  {
-    $todayTopicLink = $this->getTodayTopicLink();
-    $source = $this->curlHelper->getSource($todayTopicLink);
-    return $this->getDownloadLinkFromTopicSource($source, $provider);
-  }
-
-  function getDownloadLinkFromTopicSource($source, $provider)
-  {
-    $pattern = '$"(https?://'.$provider.'/[\S\s]+?)"$';
-    preg_match($pattern, $source, $matches); 
-    if(sizeof($matches) < 2)
-      throw new Exception("Cannot find today download link!");
-   
-    return $matches[1];
-  }
-
-  function getTitleFromTopicSource($source)
+  private function getTitleFromTopicSource($source)
   {
     $pattern = '!rel="bookmark">([\S\s]+)</a></h1>!';
 
@@ -76,4 +62,24 @@ class Worker
     return $matches[1];
   }
 
+  private function getImageurlFromTopicSource($source)
+  {
+    $pattern = '!img itemprop\="image" src\="([\S\s]+)" alt\="La Gazzetta dello Sport!';
+
+    preg_match($pattern, $source, $matches); 
+    if(sizeof($matches) < 2)
+      throw new Exception("Cannot find today image link!");
+   
+    return $matches[1];
+  }
+
+  private function getDownloadLinkFromTopicSource($source, $provider)
+  {
+    $pattern = '$"(https?://'.$provider.'/[\S\s]+?)"$';
+    preg_match($pattern, $source, $matches); 
+    if(sizeof($matches) < 2)
+      throw new Exception("Cannot find today download link!");
+   
+    return $matches[1];
+  }
 }
