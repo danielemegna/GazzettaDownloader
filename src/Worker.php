@@ -30,7 +30,7 @@ class Worker
       $source = $this->curlHelper->getSource("http://vstau.info/category/giornali/page/2");
       preg_match($pattern, $source, $matches); 
 
-      if(sizeof($matches) < 3)
+      if(sizeof($matches) < 2)
         throw new Exception("Cannot find today topic link!");
    }
    
