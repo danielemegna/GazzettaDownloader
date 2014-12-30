@@ -8,10 +8,10 @@ $w = new Worker($ch);
 $todayTopic = $w->getTodayTopic();
 $dwLinks = $todayTopic->downloadLinks();
 
-/*if(isset($dwLinks["tusfiles.net"])) {
+if(isset($dwLinks["tusfiles.net"])) {
   $td = new TusfilesDownloader($ch);
-  $tusfilesDirectLink = $td->getFileDirectLink($tusfilesDownloadLink);
-}*/
+  $dwLinks["tusfiles.net"] = $td->getFileDirectLink($dwLinks["tusfiles.net"]);
+}
 
 ?>
 <center>
