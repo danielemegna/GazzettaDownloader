@@ -6,10 +6,12 @@ $ch = new CurlHelper();
 $w = new Worker($ch);
 
 $todayTopic = $w->getTodayTopic();
-$tusfilesDownloadLink = $todayTopic->downloadLink("www.tusfiles.net");
+$dwLinks = $todayTopic->downloadLinks();
 
-$td = new TusfilesDownloader($ch);
-$tusfilesDirectLink = $td->getFileDirectLink($tusfilesDownloadLink);
+/*if(isset($dwLinks["tusfiles.net"])) {
+  $td = new TusfilesDownloader($ch);
+  $tusfilesDirectLink = $td->getFileDirectLink($tusfilesDownloadLink);
+}*/
 
 ?>
 <center>
@@ -20,8 +22,9 @@ $tusfilesDirectLink = $td->getFileDirectLink($tusfilesDownloadLink);
 
   <a href='<?php echo $todayTopic->url; ?>'>Today topic url</a>
   <br/>
-  <a href='<?php echo $tusfilesDownloadLink; ?>'>Tusfiles Link</a>
-  <br/>
-  <a href='<?php echo $tusfilesDirectLink; ?>'>Tusfiles Direct Link</a>
+  <?php foreach($dwLinks as $label => $href) { ?>
+    <a href='<?php echo $href; ?>'><?php echo $label; ?></a>
+    <br/>
+  <?php } ?>
 
 </center>
