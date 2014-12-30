@@ -1,14 +1,5 @@
 <?php
 
-class Topic
-{
-  public $url;
-  public $htmlSource;
-  public $title;
-  public $downloadLinks;
-  public $imageurl;
-}
-
 class Worker
 {
   private $curlHelper;
@@ -18,17 +9,12 @@ class Worker
     $this->curlHelper = $curlHelper;
   }
 
-  function getTodayTopic($providers)
+  function getTodayTopic()
   {
     $topic = new Topic();
     
     $topic->url = $this->getTodayTopicLink();
-    $topic->htmlSource = $this->curlHelper->getSource($topic->url);
-    $topic->title = $this->getTitleFromTopicSource($topic->htmlSource);
-    $topic->imageurl = $this->getImageurlFromTopicSource($topic->htmlSource);
-
-    foreach($providers as $provider)
-      $topic->downloadLinks[$provider] = $this->getDownloadLinkFromTopicSource($topic->htmlSource, $provider);
+    $topic->source = $this->curlHelper->getSource($topic->url);
 
     return $topic;
   }
@@ -47,38 +33,6 @@ class Worker
       if(sizeof($matches) < 3)
         throw new Exception("Cannot find today topic link!");
    }
-   
-    return $matches[1];
-  }
-
-  private function getTitleFromTopicSource($source)
-  {
-    $pattern = '!rel="bookmark">([\S\s]+)</a></h1>!';
-
-    preg_match($pattern, $source, $matches); 
-    if(sizeof($matches) < 2)
-      throw new Exception("Cannot find today topic title!");
-   
-    return $matches[1];
-  }
-
-  private function getImageurlFromTopicSource($source)
-  {
-    $pattern = '!img itemprop\="image" src\="([\S\s]+)" alt\="La Gazzetta dello Sport!';
-
-    preg_match($pattern, $source, $matches); 
-    if(sizeof($matches) < 2)
-      throw new Exception("Cannot find today image link!");
-   
-    return $matches[1];
-  }
-
-  private function getDownloadLinkFromTopicSource($source, $provider)
-  {
-    $pattern = '$"(https?://'.$provider.'/[\S\s]+?)"$';
-    preg_match($pattern, $source, $matches); 
-    if(sizeof($matches) < 2)
-      throw new Exception("Cannot find today download link!");
    
     return $matches[1];
   }

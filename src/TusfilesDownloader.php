@@ -11,6 +11,9 @@ class TusfilesDownloader
 
   function getFileDirectLink($link)
   {
+    if($link == null || $link == '')
+      return '';
+
     $rand = $this->getRandValueFromTusfilePageLink($link);
     $id = $this->getIdValueFromTusfilePageLink($link);
 
