@@ -16,9 +16,7 @@ class TusfilesDownloader
 
     $rand = $this->getRandValueFromTusfilePageLink($link);
     $id = $this->getIdValueFromTusfilePageLink($link);
-
-    $ch = curl_init($link);
-    $params = array(
+    $response = $this->curlHelper->postCall($link, [
       'op' => 'download2',
       'id' => $id,
       'rand' => $rand,
@@ -26,17 +24,11 @@ class TusfilesDownloader
       'method_free' => '',
       'method_premium' => '',
       'down_script' => '1',
-    );
+    ]);
 
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    $data = curl_exec($ch);
-    $header = curl_getinfo ($ch);
-    curl_close($ch);
-
-    return $header['redirect_url'];
+    $headers = $response[0];
+    //$data = $response[1];
+    return $headers['redirect_url'];
   }
 
   private function getIdValueFromTusfilePageLink($link)
