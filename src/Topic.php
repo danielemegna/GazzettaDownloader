@@ -29,7 +29,7 @@ class Topic
     {
       $label = $matches[2][$i];
       $href = $matches[1][$i];
-      $result[$label] = $href;
+      $result[] = new DownloadLink($label, $href);
     }
 
     return $result;

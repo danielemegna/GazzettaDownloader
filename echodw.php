@@ -5,12 +5,19 @@ require_once 'vendor/autoload.php';
 $ch = new CurlHelper();
 $w = new Worker($ch);
 
+$linkShortcutters = [
+  new TusfilesDownloader($ch),
+  new Rapid8Slave('http://www3.cbox.ws/box/?boxid=3406465&boxtag=rapid8', $ch),
+];
+
 $todayTopic = $w->getTodayTopic();
 $dwLinks = $todayTopic->downloadLinks();
 
-if(isset($dwLinks["tusfiles.net"])) {
-  $td = new TusfilesDownloader($ch);
-  $dwLinks["tusfiles.net"] = $td->getFileDirectLink($dwLinks["tusfiles.net"]);
+foreach($dwLinks as $dwLink) {
+  foreach($linkShortcutters as $ls) {
+    if($ls->isLinkSupported($dwLink->url))
+      $dwLink->shortUrl = $ls->work($dwLink->url);
+  }
 }
 
 ?>
@@ -22,8 +29,9 @@ if(isset($dwLinks["tusfiles.net"])) {
 
   <a href='<?php echo $todayTopic->url; ?>'>Today topic url</a>
   <br/>
-  <?php foreach($dwLinks as $label => $href) { ?>
-    <a href='<?php echo $href; ?>'><?php echo $label; ?></a>
+  <?php foreach($dwLinks as $dwLink) { ?>
+    <a href='<?php echo $dwLink->url; ?>'><?php echo $dwLink->label; ?></a>
+    (<a href='<?php echo $dwLink->shortUrl; ?>'>short url</a>)
     <br/>
   <?php } ?>
 

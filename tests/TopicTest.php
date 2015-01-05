@@ -49,31 +49,31 @@ class TopicTest extends PHPUnit_Framework_TestCase
   {
     $dwLinks = $this->t1->downloadLinks();
     $this->assertEquals(3, count($dwLinks));
-    $this->assertArrayHasKey("easybytez.com", $dwLinks);
-    $this->assertArrayHasKey("rockfile.eu", $dwLinks);
-    $this->assertArrayHasKey("linestorage.com", $dwLinks);
-    $this->assertEquals("http://www.easybytez.com/pgj84p1h1vmt", $dwLinks["easybytez.com"]);
-    $this->assertEquals("http://rockfile.eu/3ywg7nl1qlvl.html", $dwLinks["rockfile.eu"]);
-    $this->assertEquals("http://linestorage.com/jiiya2pl0lde", $dwLinks["linestorage.com"]);
+    $this->assertEquals("easybytez.com", $dwLinks[0]->label);
+    $this->assertEquals("rockfile.eu", $dwLinks[1]->label);
+    $this->assertEquals("linestorage.com", $dwLinks[2]->label);
+    $this->assertEquals("http://www.easybytez.com/pgj84p1h1vmt", $dwLinks[0]->url);
+    $this->assertEquals("http://rockfile.eu/3ywg7nl1qlvl.html", $dwLinks[1]->url);
+    $this->assertEquals("http://linestorage.com/jiiya2pl0lde", $dwLinks[2]->url);
 
 
     $dwLinks = $this->t2->downloadLinks();
     $this->assertEquals(3, count($dwLinks));
-    $this->assertArrayHasKey("uploaded.net", $dwLinks);
-    $this->assertArrayHasKey("linestorage.com", $dwLinks);
-    $this->assertArrayHasKey("tusfiles.net", $dwLinks);
+    $this->assertEquals("uploaded.net", $dwLinks[0]->label);
+    $this->assertEquals("linestorage.com", $dwLinks[1]->label);
+    $this->assertEquals("tusfiles.net", $dwLinks[2]->label);
 
     $this->assertEquals(
       "http://uploaded.net/file/lkyx37d7",
-      $dwLinks["uploaded.net"]
+      $dwLinks[0]->url
     );
     $this->assertEquals(
       "http://linestorage.com/29j851prok1x/gazzetta_20141229.pdf.html",
-      $dwLinks["linestorage.com"]
+      $dwLinks[1]->url
     );
     $this->assertEquals(
       "http://www.tusfiles.net/ni2x8iqujyod",
-      $dwLinks["tusfiles.net"]
+      $dwLinks[2]->url
     );
   }
 
