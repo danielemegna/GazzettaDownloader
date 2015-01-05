@@ -1,6 +1,6 @@
 <?php
 
-class TusfilesDownloader
+class TusfilesDownloader implements LinkShortcutter
 {
   private $curlHelper;
 
@@ -9,14 +9,32 @@ class TusfilesDownloader
     $this->curlHelper = $curlHelper;
   }
 
-  function getFileDirectLink($link)
+  function isLinkSupported($link)
+  {
+    $link = strtolower($link);
+    return (strpos($link,"tusfiles.net") !== false);
+  }
+
+  function work($link)
   {
     if($link == null || $link == '')
       return '';
 
     $rand = $this->getRandValueFromTusfilePageLink($link);
     $id = $this->getIdValueFromTusfilePageLink($link);
-    $response = $this->curlHelper->postCall($link, [
+    $response = $this->postDownloadRequestToDownloadPage($link, $id, $rand);
+
+    $headers = $response[0];
+    
+    if(!isset($headers['redirect_url']))
+      return "";
+
+    return $headers['redirect_url'];
+  }
+
+  private function postDownloadRequestToDownloadPage($link, $id, $rand)
+  {
+    return $this->curlHelper->postCall($link, [
       'op' => 'download2',
       'id' => $id,
       'rand' => $rand,
@@ -25,10 +43,6 @@ class TusfilesDownloader
       'method_premium' => '',
       'down_script' => '1',
     ]);
-
-    $headers = $response[0];
-    //$data = $response[1];
-    return $headers['redirect_url'];
   }
 
   private function getIdValueFromTusfilePageLink($link)

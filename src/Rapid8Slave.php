@@ -1,6 +1,6 @@
 <?php
 
-class Rapid8Slave
+class Rapid8Slave implements LinkShortcutter
 {
   const SECOND_TO_WAIT_FOR_RESPONSE = 5; 
 
