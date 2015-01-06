@@ -17,19 +17,23 @@ class TusfilesDownloader implements LinkShortcutter
 
   function work($link)
   {
-    if($link == null || $link == '')
+    try {
+      if($link == null || $link == '')
+        return '';
+
+      $id = $this->getIdValueFromTusfilePageLink($link);
+      $rand = $this->getRandValueFromTusfilePageLink($link);
+      $response = $this->postDownloadRequestToDownloadPage($link, $id, $rand);
+
+      $headers = $response[0];
+      
+      if(!isset($headers['redirect_url']))
+        return "";
+
+      return $headers['redirect_url'];
+    } catch(Exception $ex) {
       return '';
-
-    $rand = $this->getRandValueFromTusfilePageLink($link);
-    $id = $this->getIdValueFromTusfilePageLink($link);
-    $response = $this->postDownloadRequestToDownloadPage($link, $id, $rand);
-
-    $headers = $response[0];
-    
-    if(!isset($headers['redirect_url']))
-      return "";
-
-    return $headers['redirect_url'];
+    }
   }
 
   private function postDownloadRequestToDownloadPage($link, $id, $rand)

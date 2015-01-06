@@ -12,4 +12,9 @@ class DownloadLink
     $this->url = $url;
     $this->shortUrl = $shortUrl;
   }
+
+  function hasShortUrl()
+  {
+    return ($this->shortUrl != null && $this->shortUrl != '');
+  }
 }

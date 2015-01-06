@@ -29,13 +29,16 @@ class Rapid8Slave implements LinkShortcutter
 
   function work($linkToDownload)
   {
-    $this->sendMessageToBox($linkToDownload);
+    try {
+      $this->sendMessageToBox($linkToDownload);
+      sleep(self::SECOND_TO_WAIT_FOR_RESPONSE);
 
-    sleep(self::SECOND_TO_WAIT_FOR_RESPONSE);
-
-    return $this->getReplyFromBox(
-      '!<b>@shady90</b></span>[\s]+<div align\="center"><b><a href\="([\S\s]+?)" target\="_blank">!'
-    );
+      return $this->getReplyFromBox(
+        '!<b>@shady90</b></span>[\s]+<div align\="center"><b><a href\="([\S\s]+?)" target\="_blank">!'
+      );
+    } catch(Exception $ex) {
+      return '';
+    }
   }
 
   private function getReplyFromBox($responsePattern)

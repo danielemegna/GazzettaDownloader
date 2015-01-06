@@ -7,7 +7,7 @@ $w = new Worker($ch);
 
 $linkShortcutters = [
   new TusfilesDownloader($ch),
-  new Rapid8Slave('http://www3.cbox.ws/box/?boxid=3406465&boxtag=rapid8', $ch),
+  //new Rapid8Slave('http://www3.cbox.ws/box/?boxid=3406465&boxtag=rapid8', $ch),
 ];
 
 $todayTopic = $w->getTodayTopic();
@@ -28,10 +28,13 @@ foreach($dwLinks as $dwLink) {
   <br><br>
 
   <a href='<?php echo $todayTopic->url; ?>'>Today topic url</a>
-  <br/>
+  <br><br>
+
   <?php foreach($dwLinks as $dwLink) { ?>
     <a href='<?php echo $dwLink->url; ?>'><?php echo $dwLink->label; ?></a>
-    (<a href='<?php echo $dwLink->shortUrl; ?>'>short url</a>)
+    <?php if($dwLink->hasShortUrl()) {
+      echo "(<a href='".$dwLink->shortUrl."'>short link</a>)";
+    }?>
     <br/>
   <?php } ?>
 
