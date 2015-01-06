@@ -17,12 +17,15 @@ class TusfilesDownloaderTest extends PHPUnit_Framework_TestCase
     $this->assertTrue($this->td->isLinkSupported($pageLink));
   }
 
-  function testTDCanDownloadFromLink()
+  // This is the only test that uses network and do real post calls
+  /*function testTDCanDownloadFromLink()
   {
+    //$this->markTestSkipped();
+
     $pageLink = "https://www.tusfiles.net/jw1zzzh3eu34";
     $directLink = $this->td->work($pageLink);
     
     $pattern = "!http://p\.tusfiles\.net/d/[a-z0-9]{56}/GDS\([0-9]{4}_[0-9]{2}_[0-9]{2}\)\.pdf!";
     $this->assertRegExp($pattern, $directLink);
-  }
+  }*/
 }
