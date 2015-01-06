@@ -45,7 +45,7 @@ class Topic
   }
 
   function imageurl() {
-    $pattern = '!img itemprop\="image" src\="([\S\s]+)" alt\="La Gazzetta dello Sport!i';
+    $pattern = '!<img itemprop\="image" src\="([\S\s]+?)"!i';
 
     preg_match($pattern, $this->source, $matches); 
     if(sizeof($matches) < 2)

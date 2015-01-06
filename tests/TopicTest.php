@@ -4,6 +4,7 @@ class TopicTest extends PHPUnit_Framework_TestCase
 {
   private $t1;
   private $t2;
+  private $t3;
 
   function setUp()
   {
@@ -11,6 +12,8 @@ class TopicTest extends PHPUnit_Framework_TestCase
     $this->t1->source = file_get_contents(__DIR__.'/today-test-topic-1.html');
     $this->t2 = new Topic();
     $this->t2->source = file_get_contents(__DIR__.'/today-test-topic-2.html');
+    $this->t3 = new Topic();
+    $this->t3->source = file_get_contents(__DIR__.'/today-test-topic-3.html');
   }
 
   function testSourceIsNotEmpty()
@@ -42,6 +45,11 @@ class TopicTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(
       "http://s18.postimg.org/pf6rmbseh/gazzetta.jpg",
       $this->t2->imageurl()
+    );
+
+    $this->assertEquals(
+      "http://s6.postimg.org/p34iqhldd/screenshot_5.png",
+      $this->t3->imageurl()
     );
   }
 
