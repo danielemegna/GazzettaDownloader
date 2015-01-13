@@ -16,11 +16,15 @@ go('Tuttosport', $w, $lsf, $hw);
 
 function go($title, $w, $lsf, $hw)
 {
+  try {
   $todayTopic = $w->getTodayTopic($title);
   $dwLinks = $lsf->processDownloadLinks(
     $todayTopic->downloadLinks()
   );
   
   echo $hw->writeTopic($todayTopic, $dwLinks);
+  } catch(Exception $ex) {
+    echo "<center><p>Exception with title $title :( -->".$ex->getMessage()."</p></center>";
+  }
 }
 
