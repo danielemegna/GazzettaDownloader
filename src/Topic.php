@@ -18,7 +18,7 @@ class Topic
   function downloadLinks()
   {
     $pattern =
-      '!<a rel\="nofollow" target\="_blank" href\="(http://[\s\S]+?)">([\s\S]+?)</a>!';
+      '!<a rel\="nofollow" target\="_blank" href\="(https?://[\s\S]+?)">([\s\S]+?)</a>!';
     preg_match_all($pattern, $this->source, $matches); 
 
     if(sizeof($matches) < 2)

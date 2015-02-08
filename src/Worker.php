@@ -2,6 +2,8 @@
 
 class Worker
 {
+  const VSTAU_INFO_URL = "http://vstau.info/category/giornali/";
+  const PAGE_CHANGE_PREFIX = "page/";
   private $curlHelper;
 
   function __construct($curlHelper)
@@ -21,14 +23,17 @@ class Worker
 
   private function getTodayTopicLink($titlePrefix)
   {
-    $source = $this->curlHelper->getSource("http://vstau.info/category/giornali/");
     $pattern = '!<a itemprop\="url" href\="(http://vstau.info/[\S]+?)" title\="'.$titlePrefix.
       '[\s\S]+?" rel\="bookmark">'.$titlePrefix.'[\s\S]+?</a>!i';
 
-    preg_match($pattern, $source, $matches); 
+    $urlSuffix = ""; $nextPage = 2;
+    do {
+      if($nextPage == 5) { throw new Exception("Cannot find today topic link for titleprefix [$titlePrefix]!"); }
 
-    if(sizeof($matches) < 2)
-      throw new Exception("Cannot find today topic link for titleprefix [$titleprefix]!");
+      $source = $this->curlHelper->getSource(self::VSTAU_INFO_URL.$urlSuffix);
+      $urlSuffix = self::PAGE_CHANGE_PREFIX.$nextPage++.'/';
+      preg_match($pattern, $source, $matches); 
+    } while(sizeof($matches) < 2);
    
     return $matches[1];
   }

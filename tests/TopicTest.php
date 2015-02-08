@@ -5,6 +5,7 @@ class TopicTest extends PHPUnit_Framework_TestCase
   private $t1;
   private $t2;
   private $t3;
+  private $t4;
 
   function setUp()
   {
@@ -14,12 +15,16 @@ class TopicTest extends PHPUnit_Framework_TestCase
     $this->t2->source = file_get_contents(__DIR__.'/today-test-topic-2.html');
     $this->t3 = new Topic();
     $this->t3->source = file_get_contents(__DIR__.'/today-test-topic-3.html');
+    $this->t4 = new Topic();
+    $this->t4->source = file_get_contents(__DIR__.'/today-test-topic-4.html');
   }
 
   function testSourceIsNotEmpty()
   {
     $this->assertNotEquals("", $this->t1->source);
     $this->assertNotEquals("", $this->t2->source);
+    $this->assertNotEquals("", $this->t3->source);
+    $this->assertNotEquals("", $this->t4->source);
   }
 
   function testTopicCanExtractTitle()
@@ -32,6 +37,10 @@ class TopicTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(
       "La Gazzetta dello Sport (29-12-14)",
       $this->t2->title()
+    );
+    $this->assertEquals(
+      "La Gazzetta dello Sport (08-02-2015)",
+      $this->t4->title()
     );
   }
 
@@ -50,6 +59,11 @@ class TopicTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(
       "http://s6.postimg.org/p34iqhldd/screenshot_5.png",
       $this->t3->imageurl()
+    );
+
+    $this->assertEquals(
+      "http://s16.postimg.org/ax9dy1bz9/image.jpg",
+      $this->t4->imageurl()
     );
   }
 
@@ -83,6 +97,14 @@ class TopicTest extends PHPUnit_Framework_TestCase
       "http://www.tusfiles.net/ni2x8iqujyod",
       $dwLinks[2]->url
     );
+
+    $dwLinks = $this->t4->downloadLinks();
+    $this->assertEquals("userscloud.com", $dwLinks[0]->label);
+    $this->assertEquals("tusfiles.net", $dwLinks[1]->label);
+    $this->assertEquals("rockfile.eu", $dwLinks[2]->label);
+    $this->assertEquals("https://userscloud.com/9pc51eneytj1", $dwLinks[0]->url);
+    $this->assertEquals("https://www.tusfiles.net/0rcu9b5yut7t", $dwLinks[1]->url);
+    $this->assertEquals("http://rockfile.eu/dpwwsn7d2gkm.html", $dwLinks[2]->url);
   }
 
 }
