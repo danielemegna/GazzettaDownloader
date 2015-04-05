@@ -23,8 +23,8 @@ class TusfilesDownloader implements LinkShortcutter
       if($link == null || $link == '')
         return '';
 
-      $id = $this->getIdValueFromTusfilePageLink($link);
-      $rand = $this->getRandValueFromTusfilePageLink($link);
+      $id = $this->getIdValueFromPageLink($link);
+      $rand = $this->getRandValueFromPageLink($link);
       $response = $this->postDownloadRequestToDownloadPage($link, $id, $rand);
 
       $headers = $response[0];
@@ -51,14 +51,14 @@ class TusfilesDownloader implements LinkShortcutter
     ]);
   }
 
-  private function getIdValueFromTusfilePageLink($link)
+  private function getIdValueFromPageLink($link)
   {
-    $pattern = '!www.tusfiles.net/([a-z0-9]{12})!';
+    $pattern = '!/([a-z0-9]{12})!';
     preg_match($pattern, $link, $matches);
     return $matches[1];
   }
 
-  private function getRandValueFromTusfilePageLink($link)
+  private function getRandValueFromPageLink($link)
   {
     $source = $this->curlHelper->getSource($link);
     $pattern = '!<input type\="hidden" name\="rand" value\="([a-z0-9]{39})">!';
