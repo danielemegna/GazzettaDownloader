@@ -12,7 +12,9 @@ class TusfilesDownloader implements LinkShortcutter
   function isLinkSupported($link)
   {
     $link = strtolower($link);
-    return (strpos($link,"tusfiles.net") !== false);
+    return
+      (strpos($link,"tusfiles.net") !== false) ||
+      (strpos($link,"userscloud.com") !== false);
   }
 
   function work($link)

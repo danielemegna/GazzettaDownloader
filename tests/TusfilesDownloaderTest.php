@@ -17,6 +17,12 @@ class TusfilesDownloaderTest extends PHPUnit_Framework_TestCase
     $this->assertTrue($this->td->isLinkSupported($pageLink));
   }
 
+  function testExtendingDownloaderWithUserscloudLinks()
+  {
+    $pageLink = "https://userscloud.com/p0lacsyib6bd";
+    $this->assertTrue($this->td->isLinkSupported($pageLink));
+  }
+
   // This is the only test that uses network and do real post calls
   /*function testTDCanDownloadFromLink()
   {
